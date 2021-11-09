@@ -136,7 +136,7 @@ FreeRTOS 可以使用大约 20 种不同的编译器构建，并且可以运行�
 FreeRTOS 可以被认为是一个库，它可以提供多任务功能，而不是裸机应用程序。<br />FreeRTOS 是以一组 C 源文件提供给用户。 某些源文件对所有移植都是通用的，而某些源文件则特定于移植。 构建源文件作为项目的一部分，以使 FreeRTOS API 可用于您的应用程序。 为了方便您使用，每个官方 FreeRTOS 移植都配有演示应用程序。 演示应用程序已预先配置为构建正确的源文件，并包含正确的头文件。<br />演示应用程序应该 “开箱即用”，虽然有些演示比其他演示更旧，并且自演示程序发布以来构建工具的自身的更新可能会引起报错。 第 1.3 节描述了演示应用程序。<br />​<br />
 <a name="we4wv"></a>
 ### FreeRTOSConfig.h
-FreeRTOS 由名为<table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>的头文件配置。<br /><table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>用于定制 FreeRTOS 以用于特定应用程序。 例如，<table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>包含常量，如 <table><tr><td bgcolor=#D3D3D3>configUSE_PREEMPTION</td></tr></table>，它的设置定义了将使用协作调度算法还是抢占调度算法。 由于<table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>包含特定于应用程序的定义，因此它应位于正在构建的应用程序部分的目录中，而不是位于包含 FreeRTOS 源代码的目录中。<br />为每个 FreeRTOS 移植提供演示应用程序，每个演示应用程序包含一个<table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>文件。 因此，永远不必从头开始创建<table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>文件。 相反，建议从 FreeRTOS 移植提供的演示应用程序中的 <table><tr><td bgcolor=#D3D3D3>FreeRTOSConfig.h</td></tr></table>开始，然后根据需求修改它。<br />​<br />
+FreeRTOS 由名为 FreeRTOSConfig.h 的头文件配置。<br />FreeRTOSConfig.h 用于定制 FreeRTOS 以用于特定应用程序。 例如，FreeRTOSConfig.h 包含常量，如 configUSE_PREEMPTION，它的设置定义了将使用协作调度算法还是抢占调度算法。 由于 FreeRTOSConfig.h 包含特定于应用程序的定义，因此它应位于正在构建的应用程序部分的目录中，而不是位于包含 FreeRTOS 源代码的目录中。<br />为每个 FreeRTOS 移植提供演示应用程序，每个演示应用程序包含一个 FreeRTOSConfig.h 文件。 因此，永远不必从头开始创建 FreeRTOSConfig.h 文件。 相反，建议从 FreeRTOS 移植提供的演示应用程序中的 FreeRTOSConfig.h 开始，然后根据需求修改它。<br />​<br />
 <a name="dxvUl"></a>
 ### FreeRTOS 的官方发行版
 FreeRTOS 发布在一个 zip 文件中。 该 zip 文件包含所有 FreeRTOS 移植的源代码，以及所有 FreeRTOS 演示应用程序的项目文件。 它还包含一系列 FreeRTOS+ 生态系统组件，以及一系列 FreeRTOS+ 生态系统演示应用程序。<br />不要被 FreeRTOS 发行版中的文件数量吓到！ 任何一个应用程序中只需要非常少量的文件。<br />​<br />
@@ -205,8 +205,8 @@ FreeRTOS
 FreeRTOS 要求在编译器的 include 路径中包含三个目录。 如下：
 
 1. FreeRTOS 核心头文件的路径，它始终是 FreeRTOS / Source / include。
-1. 正在使用特定移植的 FreeRTOS 的源文件的路径。 如上所述，这是 FreeRTOS/Source/portable/[compiler]/[architecture]
-1. FreeRTOSConfig.h 头文件的路径。
+2. 正在使用特定移植的 FreeRTOS 的源文件的路径。 如上所述，这是 FreeRTOS/Source/portable/[compiler]/[architecture]
+3. FreeRTOSConfig.h 头文件的路径。
 <a name="EDXuC"></a>
 ### 头文件
 使用 FreeRTOS API 的源文件必须包含 FreeRTOS.h，然后是包含正在使用的 API 函数原型的头文件：task.h，queue.h，semphr.h，timers.h 或 event_groups.h。
@@ -526,21 +526,10 @@ typedef struct HeapRegion
 ```
 清单 5. HeapRegion_t 结构<br />表 5. vPortDefineHeapRegions() 参数
 
-| 参数名称/返回值 | 描述 |
-| --- | --- |
-
-| ​
-
-​
-
-​
-
-​
-
-​
-
-pxHeapRegions | 指向 HeapRegion_t 结构数组开头的指针。 数组中的每个结构都描述了使用 heap_5 时将成为堆的一部分的内存区域的起始地址和长度。<br />数组中的 HeapRegion_t 结构必须按起始地址排序; 描述具有最低起始地址的存储区域的 HeapRegion_t 结构必须是数组中的第一个结构，并且描述具有最高起始地址的存储区域的 HeapRegion_t 结构必须是数组中的最后一个结构。<br />数组的末尾由 HeapRegion_t 结构标记，该结构的 pucStartAddress 成员设置为 NULL。 |
-| --- | --- |
+参数名称/返回值 | 描述 
+--- | --- 
+pxHeapRegions | 指向 HeapRegion_t 结构数组开头的指针。 数组中的每个结构都描述了使用 heap_5 时将成为堆的一部分的内存区域的起始地址和长度。<br />数组中的 HeapRegion_t 结构必须按起始地址排序; 描述具有最低起始地址的存储区域的 HeapRegion_t 结构必须是数组中的第一个结构，并且描述具有最高起始地址的存储区域的 HeapRegion_t 结构必须是数组中的最后一个结构。<br />数组的末尾由 HeapRegion_t 结构标记，该结构的 pucStartAddress 成员设置为 NULL。 
+--- | ---
 
 ![image.png](https://cdn.nlark.com/yuque/0/2021/png/23129867/1635933600926-a8612b64-b6cf-48eb-85cf-c66cbe5404b0.png#clientId=u80d8bf1b-4228-4&from=paste&id=u2c20fabf&margin=%5Bobject%20Object%5D&name=image.png&originHeight=635&originWidth=1132&originalType=url&ratio=1&size=114233&status=done&style=none&taskId=u5ff55469-3aa1-45c2-a8ba-a5bdb097906)<br />图 8. 内存映射<br />清单 6 显示了一个 HeapRegion_t 结构数组，它们共同描述了三个 RAM 块。<br />​<br />
 ```csharp
@@ -636,9 +625,9 @@ size_t xPortGetFreeHeapSize( void );
 
 表 6. xPortGetFreeHeapSize() 返回值
 
-| 参数名称/返回值 | 描述 |
-| --- | --- |
-| 返回值 | 调用 xPortGetFreeHeapSize() 时在堆中保持未分配的字节数。 |
+参数名称/返回值 | 描述
+--- | ---
+返回值 | 调用 xPortGetFreeHeapSize() 时在堆中保持未分配的字节数。
 
 <a name="lVkjQ"></a>
 ### xPortGetMinimumEverFreeHeapSize() API函数
@@ -650,9 +639,9 @@ size_t xPortGetMinimumEverFreeHeapSize( void );
 
 表 7. xPortGetMinimumEverFreeHeapSize()返回值
 
-| 参数名称/返回值 | 描述 |
-| --- | --- |
-| 返回值 | 自 FreeRTOS 应用程序开始执行以来堆中已存在的最小未分配字节数。 |
+参数名称/返回值 | 描述
+--- | --- 
+返回值 | 自 FreeRTOS 应用程序开始执行以来堆中已存在的最小未分配字节数。
 
 <a name="JIfiu"></a>
 ### malloc 失败的钩子函数
