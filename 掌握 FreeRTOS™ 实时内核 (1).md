@@ -2797,7 +2797,7 @@ BaseType_t xTimerStart( TimerHandle_t xTimer, TickType_t xTicksToWait );
 --- | ---
 xTimer | 正在启动或重置的软件计时器的句柄。句柄将从用于创建软件计时器的 xTimerCreate() 调用中返回。
 xTicksToWait | xTimerStart() 使用计时器命令队列向守护程序任务发送“启动计时器”命令。<br />xTicksToWait 指定如果队列已满，调用任务应保持在阻塞状态以等待计时器命令队列上的空间变为可用的最长时间。<br />​
-如果xTicksToWait为零且计时器命令队列已满，则xTimerStart()将立即返回。<br />​阻塞时间以滴答周期指定，因此它表示的绝对时间取决于滴答频率。宏pdMS_TO_TICKS()可用于将以毫秒为单位的时间转换为以滴答为单位的时间。 <br />​如果FreeRTOSConfig.h中的include_vTaskSuspend设置为1，则。将xTicksToWait设置为portMAX_DELAY将导致调用任务无限期地保持在阻塞状态(没有超时)，以等待定时器命令队列中的空间变得可用。<br /> <br />如果在调度程序启动之前调用xTimerStart()，则会忽略xTicksToWait的值，并且xTimerStart()的行为就像xTicksToWait已设置为零一样。
+如果xTicksToWait为零且计时器命令队列已满，则xTimerStart()将立即返回。<br />​阻塞时间以滴答周期指定，因此它表示的绝对时间取决于滴答频率。宏pdMS_TO_TICKS()可用于将以毫秒为单位的时间转换为以滴答为单位的时间。 <br />​如果FreeRTOSConfig.h中的include_vTaskSuspend设置为1，则。将xTicksToWait设置为portMAX_DELAY将导致调用任务无限期地保持在阻塞状态(没有超时)，以等待定时器命令队列中的空间变得可用。<br />如果在调度程序启动之前调用xTimerStart()，则会忽略xTicksToWait的值，并且xTimerStart()的行为就像xTicksToWait已设置为零一样。
 返回值 | 有两个可能的返回值<br /> 1. pdPASS<br /> 只有当“启动定时器”命令成功发送到定时器命令队列时，才会返回pdPASS。 如果守护程序任务的优先级高于调用xTimerStart()的任务的优先级，那么调度程序将确保在xTimerStart()返回之前处理启动命令。这是因为一旦计时器命令队列中有数据，守护进程任务就会抢占调用xTimerStart()的任务。 <br />如果指定了阻塞时间(xTicksToWait不是零)，则在函数返回之前，调用任务可能被置于阻塞状态，以等待计时器命令队列中的空间变为可用，但在块时间到期之前，数据已成功写入计时器命令队列。<br />2.pdFALSE 如果由于队列已满而无法将“启动定时器”命令写入定时器命令队列，则将返回pdFALSE。 <br />如果指定了阻塞时间(xTicksToWait不是零)，则调用任务将被置于阻塞状态，以等待守护进程任务在计时器命令队列中腾出空间，但指定的阻塞时间在此之前已过期。
 
 <a name="MQXQv"></a>
