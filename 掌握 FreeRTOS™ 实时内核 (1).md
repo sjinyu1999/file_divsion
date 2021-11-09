@@ -4798,11 +4798,11 @@ EventBits_t xEventGroupWaitBits( const EventGroupHandle_t xEventGroup,
 
 表45，uxBitsToWaitFor和xWaitForAllBits参数的影响
 
-Existing Event <br />Group Value | uxBitsToWaitFor <br />value | xWaitForAllBits<br />value | Resultant Behavior | ​<br />
---- | --- | --- | --- | ---
-0000 | 0101 | pdFALSE | 由于在事件组中没有设置0位或2位，调用任务将进入阻塞状态，并且在事件组中设置0位或2位时将离开阻塞状态。 | ​<br />
-0100 | 0101 | pdTRUE  | 由于0位和2位没有同时设置在事件组中，调用任务将进入阻塞状态，当0位和2位同时设置在事件组中，调用任务将离开阻塞状态。 | ​<br />
-0100 | 0110 | pdFALSE | 调用任务不会进入阻塞状态，因为xWaitForAllBits是pdFALSE，并且uxBitsToWaitFor指定的两个位中的一个已经在事件组中设置。 | ​<br />
+Existing Event <br />Group Value | uxBitsToWaitFor <br />value | xWaitForAllBits<br />value | Resultant Behavior 
+--- | --- | --- | --- 
+0000 | 0101 | pdFALSE | 由于在事件组中没有设置0位或2位，调用任务将进入阻塞状态，并且在事件组中设置0位或2位时将离开阻塞状态。
+0100 | 0101 | pdTRUE  | 由于0位和2位没有同时设置在事件组中，调用任务将进入阻塞状态，当0位和2位同时设置在事件组中，调用任务将离开阻塞状态。 
+0100 | 0110 | pdFALSE | 调用任务不会进入阻塞状态，因为xWaitForAllBits是pdFALSE，并且uxBitsToWaitFor指定的两个位中的一个已经在事件组中设置。 
 0100 | 0110 | pdTRUE  | 由于xWaitForAllBits为pdTRUE，并且uxBitsToWaitFor指定的两个位中只有一个已经在事件组中设置，因此调用任务将进入阻塞状态。当事件组中的第2位和第3位都被设置时，任务将离开阻塞状态。​<br />
 
 
