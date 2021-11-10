@@ -246,11 +246,11 @@ SemaphoreHandle_t xSemaphoreCreateBinary( void );
 
 
 
-表33. xSemaphoreCreateBinary() 的返回值
+表33. `xSemaphoreCreateBinary()` 的返回值
 
 | 参数名称 | 描述                                                         |
-| :------- | ------------------------------------------------------------ |
-| 返回值   | 如果返回的是NULL，那么这个信号就不能被创建，因为没有足够的堆内存可供FreeRTOS分配给信号量数据结构。如果返回的值不是`NULL`，则表明该信号已被成功创建。返回的值应该作为创建的信号量的句柄。 |
+| ---------- |  ------------------------------------------------------------ |
+| 返回值  | 如果返回的是`NULL`，那么这个信号就不能被创建，因为没有足够的堆内存可供FreeRTOS分配给信号量数据结构。如果返回的值不是`NULL`，则表明该信号已被成功创建。返回的值应该作为创建的信号量的句柄。 |
 
 ### xSemaphoreTake() API函数
 
@@ -268,13 +268,13 @@ BaseType_t xSemaphoreTake( SemaphoreHandle_t xSemaphore, TickType_t xTicksToWait
 
 
 
-表34.xSemaphoreTake() 参数和返回值
+表34. `xSemaphoreTake()` 参数和返回值
 
 | 参数名称/返回值 | 描述                                                         |
 | --------------- | ------------------------------------------------------------ |
 | `xSemaphore`    | 被“带走”的信号量。一个信号量是由一个 `SemaphoreHandle_t` 类型的变量来引用的。它必须在使用前明确地创建。 |
 | `xTicksToWait`  | 任务在阻塞状态下保持的最大时间状态下等待信号量，如果信号量还没有可用的话。如果`xTicksToWait`是0，那么`xSemaphoreTake()`将立即返回，如果 则将立即返回，因为信号量是不可用的。区块时间是以tick周期为单位的，所以它的绝对时间代表的绝对时间取决于tick频率。宏指令`pdMS_TO_TICKS()`可以用来将一个以毫秒为单位的时间转换成以刻度为单位的时间。将`xTicksToWait`设置为`portMAX_DELAY`，如果`INCLUDE_vTaskSuspend` 在 `FreeRTOSConfig.h` 中被设置为 1，将导致任务无限期地等待（没有超时）。 |
-| 返回值          | 有两个可能的返回值：                                                                                                                 1.pdPASS                                                                                                                          pdPASS仅在调用 `xSemaphoreTake()` 成功获得信号时返回。如果指定了一个块状时间（`xTicksToWait`不是0），那么就有可能调用的任务被放置到阻塞状态，以等待信号量，如果它不是立即可用的，但是在阻塞时间结束前，信号量变得可用。                             2.pdFALSE                                                                                                                                                            该信号灯不可用。如果指定了一个阻塞时间（`xTicksToWait`不是0），那么调用任务将被置入阻塞状态，以等待信号量变成可用的状态，但是在这之前阻断时间已过期。 |
+| 返回值          | 有两个可能的返回值：<br/>1.pdPASS<br/>pdPASS仅在调用 `xSemaphoreTake()` 成功获得信号时返回。如果指定了一个块状时间（`xTicksToWait`不是0），那么就有可能调用的任务被放置到阻塞状态，以等待信号量，如果它不是立即可用的，但是在阻塞时间结束前，信号量变得可用。<br/>2. pdFALSE<br/>该信号灯不可用。如果指定了一个阻塞时间（`xTicksToWait`不是0），那么调用任务将被置入阻塞状态，以等待信号量变成可用的状态，但是在这之前阻断时间已过期。 |
 
 ### xSemaphoreGiveFromISR() API函数
 
@@ -301,7 +301,7 @@ BaseType_t xSemaphoreGiveFromISR( SemaphoreHandle_t xSemaphore,
 | --------------------------- | ------------------------------------------------------------ |
 | `xSemaphore`                | 被 "给予 "的信号量。一个信号量是由一个类型为`SemaphoreHandle_t`的变量来引用，并且在使用前必须明确地被创建 使用。 |
 | `pxHigherPriorityTaskWoken` | 有可能在一个单一的信号量上会有一个或多个 任务阻塞在其上，等待信号量成为可用的。调用 `xSemaphoreGiveFromISR()` 可以使 可以使信号量可用，从而导致等待信号量的任务离开阻塞状态。如果调用 `xSemaphoreGiveFromISR()` 导致一个任务离开 阻塞状态，而解除阻塞的任务的优先级高于 比当前执行的任务（被中断的任务）的优先级高。那么，在内部，`xSemaphoreGiveFromISR()` 将`*pxHigherPriorityTaskWoken `设置为pdTRUE。如果 `xSemaphoreGiveFromISR() `把这个值设置为pdTRUE。那么通常情况下，在退出中断之前应该进行上下文切换。这将确保该中断直接返回到最高优先级的就绪状态任务。 |
-| 返回值                      | 有两个可能的返回值：                                                                                              1. pdPASS                                                                                                            pdPASS只有在调用 `xSemaphoreGiveFromISR()` 是成功的。                  2、pdFAIL                                                                                                                                如果一个semaphore已经可用，则不能被给予。并且 `xSemaphoreGiveFromISR()` 将返回pdFAIL。 |
+| 返回值                      | 有两个可能的返回值：<br/> 1. pdPASS<br/>pdPASS只有在调用 `xSemaphoreGiveFromISR()` 是成功的。<br/> 2、pdFAIL<br/> 如果一个semaphore已经可用，则不能被给予。并且 `xSemaphoreGiveFromISR()` 将返回pdFAIL。 |
 
 
 
@@ -506,7 +506,7 @@ static void vUARTReceiveHandlerTask(void *pvParameters)
 
    用于统计事件的计数信号器在创建时，其初始计数值为0。
 
-> 计数事件：使用直接到任务的通知来计数事件比使用counting semaphores更有效。直接到任务的通知在第9章才会涉及。
+> 计数事件：使用直接到任务的通知来计数事件比使用计数信号量更有效。直接到任务的通知在第9章才会涉及。
 
 2. 资源管理
 
@@ -792,7 +792,7 @@ BaseType_t xQueueSendToBackFromISR(QueueHandle_t xQueue,
 | `xQueue`                    | 发送（写入）数据的队列的句柄。该队列句柄将从用于创建队列的`xQueueCreate()`调用中返回。 |
 | `pvItemToQueue`             | 一个指向将被复制到队列中的数据的指针。队列所能容纳的每个项目的大小是在创建队列时设置的，所以这个字节将从 `pvItemToQueue `复制到队列存储区。 |
 | `pxHigherPriorityTaskWoken` | 一个队列有可能会有一个或多个任务被阻塞在上面，等待数据的出现。调用 `xQueueSendToFrontFromISR(`) 或 `xQueueSendToBackFromISR() `可以使数据可用，从而导致这样一个任务离开阻塞状态。如果调用API函数导致一个任务离开阻塞状态，并且解除阻塞的任务的优先级高于当前执行的任务（被中断的任务），那么在内部，API函数将把`*pxHigherPriorityTaskWoken` 设置为pdTRUE。如果 `xQueueSendToFrontFromISR()` 或`xQueueSendToBackFromISR() `将此值设置为pdTRUE，那么在中断退出之前应该进行上下文切换。这将确保中断直接返回到最高优先级的就绪状态任务。 |
-| 返回值                      | 有两个可能的返回值:                                                                                                         1. pdPASS                                                                                                                  pdPASS仅在数据被成功发送到队列时返回。                                                                  2. `errQUEUE_FULL   `                                                                                                  `errQUEUE_FULL`如果数据不能被发送到队列，则返回，因为队列已经满了。 |
+| 返回值                      | 有两个可能的返回值:<br/>1. pdPASS<br/> pdPASS仅在数据被成功发送到队列时返回。 <br/>2. `errQUEUE_FULL`<br/> `errQUEUE_FULL`如果数据不能被发送到队列，则返回，因为队列已经满了。 |
 
 
 
@@ -1042,4 +1042,3 @@ int main( void )
 `configKERNEL_INTERRUPT_PRIORITY`必须始终设置为可能的最低中断优先级。 未实现的优先级位可以被设置为1，所以不管实际实现了多少个优先级位，这个常数总是可以被设置为255。
 
 `Cortex-M`中断的默认优先级为0--可能的最高优先级。Cortex-M硬件的实现不允许`configMAX_SYSCALL_INTERRUPT_PRIORITY `被设置为0，所以使用FreeRTOS API的中断的优先级决不能停留在其默认值。
-
