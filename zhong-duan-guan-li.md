@@ -660,6 +660,8 @@ void vPendableFunction( void *pvParameter1, uint32_t ulParameter2 );
 
 ### 示例18. 集中的延迟中断处理
 
+
+
 示例18提供了与示例16类似的功能，但没有使用信号量，也没有专门创建一个任务来执行中断所需要的处理。相反，处理是由RTOS守护任务执行的。
 
 示例18所使用的中断服务例程如清单102所示。它调用` xTimerPendFunctionCallFromISR()`，将一个指向`vDeferredHandlingFunction()` 函数的指针传递给守护任务。延迟的中断处理由`vDeferredHandlingFunction()` 函数执行。
