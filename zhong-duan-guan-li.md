@@ -646,9 +646,7 @@ void vPendableFunction( void *pvParameter1, uint32_t ulParameter2 );
 ```
 
 清单101. `xTimerPendFunctionCallFromISR()` 的`xFunctionToPend`参数中传递的函数必须符合的原型。
-
 <br/>
-
 表37. `xTimerPendFunctionCallFromISR() `参数和返回值
 
 | 参数名称/返回值             | 描述                                                         |
