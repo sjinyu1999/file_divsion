@@ -9,27 +9,22 @@
 以下是一些例子:
 
 1. 访问外设
-
-​      考虑以下场景，其中两个任务试图写入一个液晶显示器(LCD)。
-
-1. 1. 任务A执行并开始写入字符串 “Hello world”到LCD。
+   考虑以下场景，其中两个任务试图写入一个液晶显示器(LCD)。
+   1. 任务A执行并开始写入字符串 “Hello world”到LCD。
    2. 在输出字符串“Hello w”的开头部分后，任务A被任务B抢占。
+   3. 任务B在进入阻塞状态前将“中止, 重试, 失败?”写入LCD。
+   4. 任务A从它被抢占的位置继续，并完成其字符串-“orld”的剩余字符的输出。  
+   液晶显示器现在显示损坏的字符串“Hello w中止, 重试, 失败? orld”。
 
-1. 1. 任务B在进入阻塞状态前将“中止, 重试, 失败?”写入LCD。
-   2. 任务A从它被抢占的位置继续，并完成其字符串-“orld”的剩余字符的输出。
-
-液晶显示器现在显示损坏的字符串“Hello w中止, 重试, 失败? orld”。
-
-1. 读、修改、写操作
-
-清单111显示了一行C代码，以及一个如何将C代码转换为汇编代码的示例。可以看到，PORTA的值首 先从内存中读入寄存器，在寄存器中修改，然后写回内存。这被称为读、修改、写操作。
+2. 读、修改、写操作
+	清单111显示了一行C代码，以及一个如何将C代码转换为汇编代码的示例。可以看到，PORTA的值首 先从内存中读入寄存器，在寄存器中修改，然后写回内存。这被称为读、修改、写操作。
 
 ```groovy
  /* 正在编译的C代码。*/
  PORTA |= 0x01; 
  
  /* 编译C代码时生成的汇编代码。*/
- LOAD   R1, [#PORTA]  ;Read a value from PORTA into R1
+ LOAD   R1, [#PORTA]  ; Read a value from PORTA into R1
  MOVE   R2, #0x01     ; Move the absolute constant 1 into R2
  OR     R1, R2        ; Bitwise OR R1 (PORTA) with R2 (constant 1)
  STORE  R1, [#PORTA]  ; Store the new value back to PORTA

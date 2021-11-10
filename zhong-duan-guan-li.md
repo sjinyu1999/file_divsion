@@ -582,10 +582,11 @@ static uint32_t ulExampleInterruptHandler(void)
 
 示例17执行时产生的输出如图56所示。可以看出，在每次产生中断时，被推迟处理的任务会处理所有三个[模拟]事件。这些事件被锁在信号的计数值中，允许任务依次处理它们。
 
-<div align=center>
-![img](https://cdn.nlark.com/yuque/0/2021/png/23129867/1636101378827-75ccc71d-0a24-4dd0-b078-f9e41f7bdabf.png)<br/>
+
+![img](https://cdn.nlark.com/yuque/0/2021/png/23129867/1636101378827-75ccc71d-0a24-4dd0-b078-f9e41f7bdabf.png)
+
 图56. 执行示例17时产生的输出
-</div>
+
 
 
 
@@ -647,7 +648,9 @@ void vPendableFunction( void *pvParameter1, uint32_t ulParameter2 );
 ```
 
 清单101. `xTimerPendFunctionCallFromISR()` 的`xFunctionToPend`参数中传递的函数必须符合的原型。
-<br/><br/><br/>
+
+
+
 表37. `xTimerPendFunctionCallFromISR() `参数和返回值
 
 | 参数名称/返回值             | 描述                                                         |
@@ -660,7 +663,6 @@ void vPendableFunction( void *pvParameter1, uint32_t ulParameter2 );
 
 
 ### 示例18. 集中的延迟中断处理
-
 
 
 示例18提供了与示例16类似的功能，但没有使用信号量，也没有专门创建一个任务来执行中断所需要的处理。相反，处理是由RTOS守护任务执行的。

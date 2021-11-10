@@ -131,9 +131,9 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
 
 | 参数名      | 描述                                                         |
 | ----------- | ------------------------------------------------------------ |
-| xEventGroup | 要在其中设置位的事件组的句柄。事件组句柄已经从用于创建事件组的`xEventGroupCreate()`调用中返回。 |
-| uxBitsToSet | 一个位掩码，用于指定事件组中的事件位或事件位设置为1。事件组的值通过用uxBitsToSet传递的值按位或事件组的现有值来更新。例如，将uxBitsToSet设置为0x04(二进制0100)将导致事件组中的事件位3被设置(如果它还没有被设置)，而事件组中的所有其他事件位保持不变。 |
-| 返回值      | 调用`xEventGroupSetBits()`返回时事件组的值。注意，返回的值不一定是uxBitsToSet指定的位，因为这些位可能已经被另一个任务再次清除。 |
+| `xEventGroup` | 要在其中设置位的事件组的句柄。事件组句柄已经从用于创建事件组的`xEventGroupCreate()`调用中返回。 |
+| `uxBitsToSet` | 一个位掩码，用于指定事件组中的事件位或事件位设置为1。事件组的值通过用`uxBitsToSet`传递的值按位或事件组的现有值来更新。例如，将`uxBitsToSe`t设置为0x04(二进制0100)将导致事件组中的事件位3被设置(如果它还没有被设置)，而事件组中的所有其他事件位保持不变。 |
+| 返回值      | 调用`xEventGroupSetBits()`返回时事件组的值。注意，返回的值不一定是`uxBitsToSet`指定的位，因为这些位可能已经被另一个任务再次清除。 |
 
 
 
@@ -143,7 +143,7 @@ EventBits_t xEventGroupSetBits( EventGroupHandle_t xEventGroup,
 
 给出信号量是一个确定性操作，因为预先知道给出信号量最多会导致一个任务离开阻塞状态。当在事件组中设置位时，不知道有多少任务将离开阻塞状态，因此在事件组中设置位不是确定性操作。
 
-FreeRTOS设计和实现标准不允许不确定的操作在一个中断服务程序执行,或者当中断禁用这个原因，xEventGroupSetBitsFromlSR()不直接设置事件比特在中断服务程序,而是延缓RTOS守护进程的行动任务。
+FreeRTOS设计和实现标准不允许不确定的操作在一个中断服务程序执行,或者当中断禁用这个原因，`xEventGroupSetBitsFromlSR()`不直接设置事件比特在中断服务程序,而是延缓RTOS守护进程的行动任务。
 
 ```groovy
 BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
@@ -151,16 +151,16 @@ BaseType_t xEventGroupSetBitsFromISR( EventGroupHandle_t xEventGroup,
 									  BaseType_t *pxHigherPriorityTaskWoken );
 ```
 
-清单 134.  xEventGroupSetBitsFromISR() API函数原型
+清单 134. `xEventGroupSetBitsFromISR()` API函数原型
 
-表 44. xEventGroupSetBitsFromISR()参数和返回值
+表 44. `xEventGroupSetBitsFromISR()`参数和返回值
 
 | 参数名                    | 描述                                                         |
 | ------------------------- | ------------------------------------------------------------ |
-| xEventGroup               | 要在其中设置位的事件组的句柄。事件组句柄已经从用于创建事件组的`XEventGroupCreate()`调用中返回。 |
-| uxBitsToSet               | 一个位掩码，用于指定事件组中的事件位或事件位设置为1。事件组的值通过用uxBitsToSet传递的值按位或事件组的现有值来更新。例如，将uxBitsToSet设置为0x05(二进制0101)将导致事件组中的事件位3和事件位0被设置(如果它们还没有被设置)，而事件组中的所有其他事件位保持不变。 |
-| pxHigherPriorityTaskWoken | `xEventGroupSetBitsFromlSR()`不直接在中断服务例程中设置事件位，而是通过在定时器命令队列上发送命令，将操作推迟给RTOS守护进程任务。如果守护任务处于阻塞状态以等待定时器命令队列上的数据可用，那么写入定时器命令队列将导致守护任务离开阻塞状态。如果守护进程任务的优先级高于当前正在执行的任务(被中断的任务)的优先级，那么，`xEventGroupSetBitsFromlSR()`将在内部将`*pxHigherPriorityTaskWoken`设置为pdTRUE。如果`xEventGroupSetBitsFromlSR()`将这个值设置为pdTRUE，那么应该在中断退出之前执行上下文切换。这将确保中断直接返回到守护任务，因为守护任务将是最高优先级的就绪状态任务。 |
-| 返回值                    | 有两个可能的返回值：pdPASSpdPASS只在数据成功发送到定时器命令队列时返回。pdFALSE如果设置位命令不能写入定时器命令队列，因为队列已经满了，将返回pdFALSE， |
+| `xEventGroup`               | 要在其中设置位的事件组的句柄。事件组句柄已经从用于创建事件组的`XEventGroupCreate()`调用中返回。 |
+| `uxBitsToSet`               | 一个位掩码，用于指定事件组中的事件位或事件位设置为1。事件组的值通过用`uxBitsToSet`传递的值按位或事件组的现有值来更新。例如，将`uxBitsToSet`设置为0x05(二进制0101)将导致事件组中的事件位3和事件位0被设置(如果它们还没有被设置)，而事件组中的所有其他事件位保持不变。 |
+| `pxHigherPriorityTaskWoken` | `xEventGroupSetBitsFromlSR()`不直接在中断服务例程中设置事件位，而是通过在定时器命令队列上发送命令，将操作推迟给RTOS守护进程任务。如果守护任务处于阻塞状态以等待定时器命令队列上的数据可用，那么写入定时器命令队列将导致守护任务离开阻塞状态。如果守护进程任务的优先级高于当前正在执行的任务(被中断的任务)的优先级，那么，`xEventGroupSetBitsFromlSR()`将在内部将`*pxHigherPriorityTaskWoken`设置为pdTRUE。如果`xEventGroupSetBitsFromlSR()`将这个值设置为pdTRUE，那么应该在中断退出之前执行上下文切换。这将确保中断直接返回到守护任务，因为守护任务将是最高优先级的就绪状态任务。 |
+| 返回值                    | 有两个可能的返回值：<br/>pdPASS<br/>pdPASS只在数据成功发送到定时器命令队列时返回。<br/>pdFALSE<br/>如果设置位命令不能写入定时器命令队列，因为队列已经满了，将返回pdFALSE。|
 
 ### xEventGroupWaitBits() API函数
 
@@ -176,10 +176,10 @@ EventBits_t xEventGroupWaitBits( const EventGroupHandle_t xEventGroup,
 
 清单135.  `xEventGroupWaitBits()` API函数原型
 
-调度程序用来确定任务是否进入阻塞状态，以及任务何时离开阻塞状态的条件称为“解封条件”。解封条件由uxBitsToWaitFor和xWaitForAllBits参数值的组合指定：
+调度程序用来确定任务是否进入阻塞状态，以及任务何时离开阻塞状态的条件称为“解封条件”。解封条件由`uxBitsToWaitFor`和`xWaitForAllBits`参数值的组合指定：
 
-- uxBitsToWaitFor指定要测试事件组中的哪个事件位
-- xWaitForAllBits指定是使用位数OR测试，还是位数AND测试。
+- `uxBitsToWaitFor`指定要测试事件组中的哪个事件位
+- `xWaitForAllBits`指定是使用位数OR测试，还是位数AND测试。
 
 如果在调用`xEventGroupWaitBits()`时，任务的解锁条件得到满足，那么该任务将不会进入阻塞状态。
 
@@ -191,10 +191,10 @@ EventBits_t xEventGroupWaitBits( const EventGroupHandle_t xEventGroup,
 | -------------------------- | --------------------- | -------------------- | ------------------------------------------------------------ |
 | 0000                       | 0101                  | pdFALSE              | 由于在事件组中没有设置0位或2位，调用任务将进入阻塞状态，并且在事件组中设置0位或2位时将离开阻塞状态。 |
 | 0100                       | 0101                  | pdTRUE               | 由于0位和2位没有同时设置在事件组中，调用任务将进入阻塞状态，当0位和2位同时设置在事件组中，调用任务将离开阻塞状态。 |
-| 0100                       | 0110                  | pdFALSE              | 调用任务不会进入阻塞状态，因为xWaitForAllBits是pdFALSE，并且uxBitsToWaitFor指定的两个位中的一个已经在事件组中设置。 |
-| 0100                       | 0110                  | pdTRUE               | 由于xWaitForAllBits为pdTRUE，并且uxBitsToWaitFor指定的两个位中只有一个已经在事件组中设置，因此调用任务将进入阻塞状态。当事件组中的第2位和第3位都被设置时，任务将离开阻塞状态。 |
+| 0100                       | 0110                  | pdFALSE              | 调用任务不会进入阻塞状态，因为`xWaitForAllBits`是pdFALSE，并且`uxBitsToWaitFor`指定的两个位中的一个已经在事件组中设置。 |
+| 0100                       | 0110                  | pdTRUE               | 由于`xWaitForAllBits`为pdTRUE，并且`uxBitsToWaitFor`指定的两个位中只有一个已经在事件组中设置，因此调用任务将进入阻塞状态。当事件组中的第2位和第3位都被设置时，任务将离开阻塞状态。 |
 
-调用任务使用uxBitsToWaitFor参数指定要测试的位，调用任务很可能需要在满足解封条件后将这些位清除为零。事件位可以使用xEventGroupClearBits() API函数来清除，但如果使用该函数手动清除事件位将导致应用程序代码中的竞争条件：
+调用任务使用`uxBitsToWaitFor`参数指定要测试的位，调用任务很可能需要在满足解封条件后将这些位清除为零。事件位可以使用`xEventGroupClearBits()` API函数来清除，但如果使用该函数手动清除事件位将导致应用程序代码中的竞争条件：
 
 - 使用同一事件组的任务不止一个。
 - 位由不同的任务或中断服务程序在事件组中设置。
@@ -208,8 +208,8 @@ EventBits_t xEventGroupWaitBits( const EventGroupHandle_t xEventGroup,
 | `xEventGroup`     | 事件组的句柄，其中包含正在读取的事件位。事件组句柄已经从用于创建事件组的`xEventGroupCreate()`调用中返回。 |
 | `uxBitsToWaitFor` | 指定事件组中要测试的事件位或事件位的位掩码。例如，如果调用任务想要等待事件位0和/或事件位2在事件组中被设置，那么将`uxBitsToWaitFor`设置为0x05(二进制0101)。更多的例子请参见表45。 |
 | `xClearOnExit`    | 如果调用任务的解封条件已经被满足，并且`xClearOnExit`被设置为pdTRUE，那么在调用任务退出`xEventGroupWaitBits()` API函数之前，`uxBitsToWaitFor`指定的事件位将被清除回事件组中的0。如果`xClearOnExit`设置为pdFALSE，则事件组中的事件位的状态不会被`xEventGroupWaitBits()` API函数修改。 |
-| `xWaitForAllBits` | uxBitsToWaitFor参数指定要在事件组中测试的事件位。xWaitForAllBits指定当uxBitsToWaitFor参数指定的一个或多个事件位被设置时，或者只有当uxBitsToWaitFor参数指定的所有事件位被设置时，调用任务才应该从阻塞状态中删除。如果xWaitForAllBits为pdFALSE,那么一个任务进入阻塞状态等待其开启条件满足时将阻塞状态的任何部分规定uxBitsToWaitFor成为集(或指定的超时xTicksToWait参数到期)。示例请参见表45。 |
-| `xTicksToWait`    | 任务保持阻塞状态以等待其解除阻塞条件满足的最大时间。如果xTicksTolWait为零，或者在调用xEventGroupWaitBits()时满足解封条件，则xEventGroupWaitBits()将立即返回。块时间以滴答周期指定，因此它所代表的绝对时间依赖于滴答频率。宏pdMS_TO_TICKS()可用于将以毫秒为单位指定的时间转换为以ticks为单位指定的时间。将xTicksToWait设置为portMAX_DELAY将导致任务无限期等待(不会超时)，前提是在FreeRTOSConfig.h中将INCLUDE_vTaskSuspend设置为1。 |
+| `xWaitForAllBits` | `uxBitsToWaitFor`参数指定要在事件组中测试的事件位。`xWaitForAllBits`指定当`uxBitsToWaitFor`参数指定的一个或多个事件位被设置时，或者只有当`uxBitsToWaitFor`参数指定的所有事件位被设置时，调用任务才应该从阻塞状态中删除。如果`xWaitForAllBits`为pdFALSE,那么一个任务进入阻塞状态等待其开启条件满足时将阻塞状态的任何部分规定`uxBitsToWaitFor`成为集(或指定的超时`xTicksToWait`参数到期)。示例请参见表45。 |
+| `xTicksToWait`    | 任务保持阻塞状态以等待其解除阻塞条件满足的最大时间。如果`xTicksTolWait`为零，或者在调用`xEventGroupWaitBits()`时满足解封条件，则`xEventGroupWaitBits()`将立即返回。块时间以滴答周期指定，因此它所代表的绝对时间依赖于滴答频率。宏`pdMS_TO_TICKS()`可用于将以毫秒为单位指定的时间转换为以ticks为单位指定的时间。将`xTicksToWait`设置为`portMAX_DELAY`将导致任务无限期等待(不会超时)，前提是在`FreeRTOSConfig.h`中将`INCLUDE_vTaskSuspend`设置为1。 |
 | 返回值            | 如果`xEventGroupWaitBits()`返回是因为调用任务的解封条件被满足，那么返回值是调用任务的解封条件被满足时的事件组的值(在`xClearOnExit`为pdTRUE时自动清除任何位之前)。在这种情况下，返回值也将满足解封条件。如果`xEventGroupWaitBits()`返回是因为`xTicksToWait`参数指定的块时间过期，那么返回的值是块时间过期时事件组的值。在这种情况下，返回值将不满足解封条件。 |
 
 
@@ -224,13 +224,13 @@ EventBits_t xEventGroupWaitBits( const EventGroupHandle_t xEventGroup,
 - 从任务中设置事件组中的位。
 - 阻塞事件组。
 
-`xEventGroupWaitBits()` xWaitForAllBits参数的效果是通过首先执行xWaitForAllBits设置为pdFALSE的示例，然后执行xWaitForAllBits设置为pdTRUE的示例来演示的。
+`xEventGroupWaitBits()` `xWaitForAllBits`参数的效果是通过首先执行`xWaitForAllBits`设置为pdFALSE的示例，然后执行`xWaitForAllBits`设置为pdTRUE的示例来演示的。
 
 事件位0和事件位1由一个任务设置。事件位2是由中断服务程序设置的。例程设置。这三个位通过#define语句被赋予描述性的名字，如清单136所示。
 
 ```groovy
 /*"事件组中事件位的定义。 */
-#define mainFIRST_TASK_BIT n( 1UL << 0UL ) /* 事件位0，由任务设置。 */
+#define mainFIRST_TASK_BIT  ( 1UL << 0UL ) /* 事件位0，由任务设置。 */
 #define mainSECOND_TASK_BIT ( 1UL << 1UL ) /* 事件位1，由任务设置。 */
 #define mainISR_BIT         ( 1UL << 2UL ) /* 事件位2，由ISR设置。 */
 ```
@@ -274,7 +274,7 @@ static uint32_t ulEventBitSettingISR( void )
 /* 该字符串没有在中断服务程序中打印，而是被发送到RTOS守护进程任务中打印。因此，它被声明为static，以确保编译器不会在ISR的堆栈上分配字符串，因为当从守护进程任务打印字符串时，ISR的堆栈帧将不存在。*/
 static const char *pcString = "Bit setting ISR -\t about to set bit 2.\r\n";
 BaseType_t xHigherPriorityTaskWoken = pdFALSE;
-    /*输出一个消息说第2位即将被设置。消息不能从ISR打印，因此通过挂起函数调用在RTOS守护进程任务上下文	 中运行，将实际输出推迟到RTOS守护进程任务。*/
+    /*输出一个消息说第2位即将被设置。消息不能从ISR打印，因此通过挂起函数调用在RTOS守护进程任务上下文中运行，将实际输出推迟到RTOS守护进程任务。*/
  	xTimerPendFunctionCallFromISR( vPrintStringFromDaemonTask, 
  								  ( void * ) pcString, 
  								  0, 
@@ -283,11 +283,11 @@ BaseType_t xHigherPriorityTaskWoken = pdFALSE;
     /* 在事件组中设置位2。 */
  	xEventGroupSetBitsFromISR( xEventGroup, mainISR_BIT, &xHigherPriorityTaskWoken );
     
-    /* xTimerPendFunctionCallFromISR()和xEventGroupsetBitsFromISR()都写定时器命令队列，并使用		相同的xHigherPriorityraskwoken变量。如果写入定时器命令队列导致RTOS守护进程任务，并且RTOS守护进     程任务的优先级较高，则返回Blocked状态比当前正在执行的任务(此中断的任务)的优先级高然后				xhigherprioritytaskkoken将被设置为pdTRUE。
+    /* xTimerPendFunctionCallFromISR()和xEventGroupsetBitsFromISR()都写定时器命令队列，并使用相同的xHigherPriorityraskwoken变量。如果写入定时器命令队列导致RTOS守护进程任务，并且RTOS守护进程任务的优先级较高，则返回Blocked状态比当前正在执行的任务(此中断的任务)的优先级高然后xhigherprioritytaskkoken将被设置为pdTRUE。
     
-    xHigherPriorityTaskwoken用作portYIELD FROM ISR()的参数。如果xHigherPriorityraskwoken等于     pdTRUE，那么从ISR()调用portYIEID将请求一个上下文切换。如果xHigherPriorityraskwoken仍然是         pdFALSE，那么从ISR()调用portYIELD将没有效果。
+    xHigherPriorityTaskwoken用作portYIELD FROM ISR()的参数。如果xHigherPriorityraskwoken等于pdTRUE，那么从ISR()调用portYIEID将请求一个上下文切换。如果xHigherPriorityraskwoken仍然是pdFALSE，那么从ISR()调用portYIELD将没有效果。
     
-    由windows端口使用的portYIELD_FROM_ISR()的实现包括一个返回语句，这就是为什么这个函数没有显式返	回值。*/
+    由windows端口使用的portYIELD_FROM_ISR()的实现包括一个返回语句，这就是为什么这个函数没有显式返回值。*/
 	portYIELD_FROM_ISR( xHigherPriorityTaskWoken );
 }
 ```
@@ -296,7 +296,7 @@ BaseType_t xHigherPriorityTaskWoken = pdFALSE;
 
 清单139显示了调用`xEventGroupWaitBits()`来阻塞事件组的任务的实现。任务为事件组中设置的每个位打印一个字符串。
 
-`xEventGroupWaitBits()` xClearOnExit参数被设置为pdTRUE，因此导致调用`xEventGroupWaitBits()`返回的事件位或位将在`xEventGroupWaitBits()`返回之前被自动清除。
+`xEventGroupWaitBits()` `xClearOnExit`参数被设置为pdTRUE，因此导致调用`xEventGroupWaitBits()`返回的事件位或位将在`xEventGroupWaitBits()`返回之前被自动清除。
 
 ```groovy
 static void vEventBitReadingTask( void *pvParameters )
@@ -317,7 +317,7 @@ const EventBits_t xBitsToWaitFor = ( mainFIRST_TASK_BIT  |
  												/*如果满足解封条件，则在退出时清除位。*/
  												pdTRUE,
             
- 												/*不要等待所有的位。对于第二次执行，该参数被设置												 为pdTRUE。 */
+ 												/*不要等待所有的位。对于第二次执行，该参数被设置为pdTRUE。 */
  												pdFALSE,
             
  												/* 不要超时。 */
@@ -358,7 +358,7 @@ int main(void)
     /* 创建用于周期性产生软件中断的任务。 */
     xTaskCreate(vInterruptGenerator, "Int Gen", 1000, NULL, 3, NULL);
     
-    /*安装软件中断的处理程序。完成此操作所需的语法取决于所使用的FreeRTOS端口。这里显示的语法只能在	FreeRros Windows端口中使用，在该端口中这种中断只能被模拟。 */
+    /*安装软件中断的处理程序。完成此操作所需的语法取决于所使用的FreeRTOS端口。这里显示的语法只能在FreeRros Windows端口中使用，在该端口中这种中断只能被模拟。 */
     vPortSetInterruptHandler(mainINTERRUPT_NUMBER, ulEventBitSettingISR);
     
     /* 启动调度程序，使创建的任务开始执行。 */
@@ -426,7 +426,7 @@ uint32_t ulTxCount = 0UL;
         /* 让Rx任务知道Tx任务想要关闭套接字。 */
         TxTaskWantsToCloseSocket();
         
-        /* 这是Tx任务的同步点。Tx任务在这里等待Rx任务到达它的同步点。Rx任务只有在不再使用套接字时才			会到达它的同步点，并且可以安全地关闭套接字。*/
+        /* 这是Tx任务的同步点。Tx任务在这里等待Rx任务到达它的同步点。Rx任务只有在不再使用套接字时才会到达它的同步点，并且可以安全地关闭套接字。*/
         xEventGroupSync(...);
         
         /* 这两个任务都没有使用套接字。关闭连接，然后关闭套接字。*/
@@ -482,9 +482,9 @@ xSocket_t xSocket;
 
 ### xEventGroupSync() API函数
 
-提供xEventGroupSync()允许两个或多个任务使用事件组彼此同步。该功能允许任务在一个事件组中设置一个或多个事件位，然后等待在同一事件组中设置多个事件位的组合，作为一个单独的不可中断操作。
+提供`xEventGroupSync()`允许两个或多个任务使用事件组彼此同步。该功能允许任务在一个事件组中设置一个或多个事件位，然后等待在同一事件组中设置多个事件位的组合，作为一个单独的不可中断操作。
 
-`xEventGroupSync()` uxBitsTolaitFor参数指定调用任务的解除阻塞条件。如果`xEventGroupSync()`返回是因为满足了不阻塞条件，uxBitsTolaitFor指定的事件位将在`xEventGroupSync()`返回之前被清除回零。
+`xEventGroupSync()` uxBitsTolaitFor参数指定调用任务的解除阻塞条件。如果`xEventGroupSync()`返回是因为满足了不阻塞条件，`uxBitsTolaitFor`指定的事件位将在`xEventGroupSync()`返回之前被清除回零。
 
 ```groovy
 EventBits_t xEventGroupSync(EventGroupHandle_t xEventGroup,
@@ -499,17 +499,17 @@ EventBits_t xEventGroupSync(EventGroupHandle_t xEventGroup,
 
 | 参数名          | 描述                                                         |
 | --------------- | ------------------------------------------------------------ |
-| xEventGroup     | 要在其中设置事件位然后测试的事件组的句柄。事件组句柄已经从用于创建事件组的xEventGroupCreate()调用中返回。 |
-| uxBitsToSet     | 一个位掩码，用于指定事件组中的事件位或事件位设置为1。事件组的值通过用uxBitsToSet传递的值按位或事件组的现有值来更新。例如，将uxBitsToSet设置为0x04(二进制0100)将导致事件3位被设置(如果它还没有被设置)，而事件组中的所有其他事件位保持不变。 |
-| uxBitsToWaitFor | 指定事件组中要测试的事件位或事件位的位掩码。例如，如果调用任务想要等待事件位0，1和2在事件组中被设置，那么将uxBitsToWaitFor设置为0x07(二进制111). |
-| xTicksToWait    | 任务保持阻塞状态以等待其解除阻塞条件满足的最大时间。如果xTicksToWait为零，或者在调用xEventGroupSync()时满足解除条件，则xEventGroupSync()将立即返回。块时间以滴答周期指定，因此它所代表的绝对时间依赖于滴答频率。宏pdMS_TO_TICKS()可用于将以毫秒为单位的时间转换为以节拍为单位的时间。将xTicksToWait设置为portMAX_DELAY将导致任务无限期等待(不会超时)，前提是在FreeRTOSConfig.h中将INCLUDE_vTaskSuspend设置为1。 |
-| 返回值          | 如果xEventGroupSync()返回是因为调用任务的阻塞条件被满足，那么返回的值是调用任务的阻塞条件被满足时的事件组的值(在任何位被自动清除回零之前)。在这种情况下，返回值也将满足调用任务的阻塞条件。如果xEventGroupSync()返回是因为xTicksToWait参数指定的块时间过期，那么返回的值是块时间过期时事件组的值。在这种情况下，返回值将不满足调用任务的阻塞条件。 |
+| `xEventGroup`     | 要在其中设置事件位然后测试的事件组的句柄。事件组句柄已经从用于创建事件组的`xEventGroupCreate()`调用中返回。 |
+| `uxBitsToSet`     | 一个位掩码，用于指定事件组中的事件位或事件位设置为1。事件组的值通过用`uxBitsToSet`传递的值按位或事件组的现有值来更新。例如，将`uxBitsToSet`设置为0x04(二进制0100)将导致事件3位被设置(如果它还没有被设置)，而事件组中的所有其他事件位保持不变。 |
+| `uxBitsToWaitFor` | 指定事件组中要测试的事件位或事件位的位掩码。例如，如果调用任务想要等待事件位0，1和2在事件组中被设置，那么将`uxBitsToWaitFor`设置为0x07(二进制111). |
+| `xTicksToWait`    | 任务保持阻塞状态以等待其解除阻塞条件满足的最大时间。如果`xTicksToWait`为零，或者在调用`xEventGroupSync()`时满足解除条件，则`xEventGroupSync()`将立即返回。块时间以滴答周期指定，因此它所代表的绝对时间依赖于滴答频率。宏`pdMS_TO_TICKS()`可用于将以毫秒为单位的时间转换为以节拍为单位的时间。将`xTicksToWait`设置为`portMAX_DELAY`将导致任务无限期等待(不会超时)，前提是在`FreeRTOSConfig.h`中将`INCLUDE_vTaskSuspend`设置为1。 |
+| 返回值          | 如果`xEventGroupSync()`返回是因为调用任务的阻塞条件被满足，那么返回的值是调用任务的阻塞条件被满足时的事件组的值(在任何位被自动清除回零之前)。在这种情况下，返回值也将满足调用任务的阻塞条件。如果`xEventGroupSync()`返回是因为`xTicksToWait`参数指定的块时间过期，那么返回的值是块时间过期时事件组的值。在这种情况下，返回值将不满足调用任务的阻塞条件。 |
 
 
 
 ### 示例23. 同步任务
 
-示例23使用`xEventGroupSync()`同步一个任务实现的三个实例。任务参数用于将任务调用xEventGroupSync()时设置的事件位传递给每个实例。
+示例23使用`xEventGroupSync()`同步一个任务实现的三个实例。任务参数用于将任务调用`xEventGroupSync()`时设置的事件位传递给每个实例。
 
 任务在调用`xEventGroupsync()`之前打印一条消息，在调用`xEventGroupsync()`返回之后再次打印一条消息。每条消息都包含一个时间戳。这允许在生成的输出中观察执行顺序。伪随机延迟用于防止所有任务同时到达同步点。
 
@@ -589,7 +589,7 @@ int main(void)
 }
 ```
 
-清单144. 示例23中使用的main()函数
+清单144. 示例23中使用的`main()`函数
 
 执行示例23时产生的输出如图75所示。可以看到，即使每个任务在不同的(伪随机)时间到达同步点，每个任务在同一时间退出同步点1(这是最后一个任务到达同步点的时间)。
 
