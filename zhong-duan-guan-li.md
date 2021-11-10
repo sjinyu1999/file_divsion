@@ -647,7 +647,7 @@ void vPendableFunction( void *pvParameter1, uint32_t ulParameter2 );
 
 清单101. `xTimerPendFunctionCallFromISR()` 的`xFunctionToPend`参数中传递的函数必须符合的原型。
 
-
+<br/>
 
 表37. `xTimerPendFunctionCallFromISR() `参数和返回值
 
@@ -656,7 +656,7 @@ void vPendableFunction( void *pvParameter1, uint32_t ulParameter2 );
 | `pvParameter1`              | 将被传递到由守护任务执行的函数中的值，作为该函数的`pvParameter1`参数。该参数有一个void *类型，允许它用来传递任何数据类型。例如，整数类型可以直接转换为void *，或者，void *可以用来指向一个结构。 |
 | `ulParameter2 `             | 将被传递到由守护任务执行的函数中的值，作为该函数的`ulParameter2`参数。 |
 | `pxHigherPriorityTaskWoken` | `xTimerPendFunctionCallFromISR()` 写到定时器命令队列。如果RTOS守护任务处于阻塞状态以等待定时器命令队列上的数据，那么写到定时器命令队列将导致守护任务离开阻塞状态。如果守护任务的优先级高于当前执行的任务（被中断的任务）的优先级，那么在内部，`xTimerPendFunctionCallFromISR()` 将把`*pxHigherPriorityTaskWoken`设为pdTRUE。如果 `xTimerPendFunctionCallFromISR()` 将此值设置为pdTRUE，那么在退出中断之前必须进行上下文切换。这将确保中断直接返回到守护任务，因为守护任务将是最高优先级的就绪状态任务。 |
-| 返回值                   | 有两个可能的返回值：1. pdPASS<br/>如果"`execute function`"命令被写入定时器命令队列，将返回pdPASS。<br/>2. pdFAIL<br/>如果"`execute function`"命令不能被写入定时器命令队列，因为定时器命令队列已经满了，则将返回pdFAIL。第5章描述了如何设置定时器命令队列的长度。 |
+| 返回值                   | 有两个可能的返回值：<br/>1. pdPASS<br/>如果"`execute function`"命令被写入定时器命令队列，将返回pdPASS。<br/>2. pdFAIL<br/>如果"`execute function`"命令不能被写入定时器命令队列，因为定时器命令队列已经满了，则将返回pdFAIL。第5章描述了如何设置定时器命令队列的长度。 |
 
 
 
