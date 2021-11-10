@@ -582,7 +582,7 @@ static uint32_t ulExampleInterruptHandler(void)
 
 示例17执行时产生的输出如图56所示。可以看出，在每次产生中断时，被推迟处理的任务会处理所有三个[模拟]事件。这些事件被锁在信号的计数值中，允许任务依次处理它们。
 
-<div align=center> ![img](https://cdn.nlark.com/yuque/0/2021/png/23129867/1636101378827-75ccc71d-0a24-4dd0-b078-f9e41f7bdabf.png)<br/>图56. 执行示例17时产生的输出</div>
+<div align=center src=![img](https://cdn.nlark.com/yuque/0/2021/png/23129867/1636101378827-75ccc71d-0a24-4dd0-b078-f9e41f7bdabf.png)>图56. 执行示例17时产生的输出</div>
 
 
 
